@@ -38,6 +38,7 @@ struct OffWorkView: View {
                     }
                 }
                 
+                
             })
         }
         .toolbar {
@@ -48,7 +49,7 @@ struct OffWorkView: View {
             }
         }
     }//body
-        
+    
 }
 
 #Preview {
@@ -64,7 +65,7 @@ struct BackWorkButtonTurn: View {
     
     var body: some View {
         Button(action: {
-            tech.isWork.toggle()
+            tech.isWork = true
             tech.date = Date.now
         }, label: {
             OffTech(tech: tech)
@@ -72,3 +73,23 @@ struct BackWorkButtonTurn: View {
     }
 }
 
+
+struct OffTech: View {
+    var tech: Tech
+    var body: some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill()//randomColor here
+                .frame(width: 130, height: 100)
+                .overlay{
+                    VStack {
+                        Text(String(tech.name.first!))
+                            .font(.system(size: 45))
+                            
+                        Text(tech.name).font(.system(size: 30))
+                    }.foregroundStyle(.background)
+                }
+        }.padding()
+            .foregroundStyle(.gray)
+    }
+}

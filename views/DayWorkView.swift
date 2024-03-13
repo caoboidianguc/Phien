@@ -12,22 +12,27 @@ struct DayWorkView: View {
     @EnvironmentObject var shop: ShopStore
     
     @State private var themTechButton = false
-    
+    var isSomeOne: Bool {
+        self.shop.shop.techs.filter({$0.isWork}).isEmpty
+    }
+    var isOff: Bool {
+        self.shop.shop.techs.filter({!$0.isWork || !$0.today}).isEmpty
+    }
     var body: some View {
         NavigationStack {
             ScrollView {
                 Section(content: {
                     WorkingView()
                 }, header: {
-                    Text("Working")
+                    Text(isSomeOne ? "👀" : "Working right now..")
                         .font(.title)
-                        .foregroundStyle(.green)
+                        .foregroundStyle(isSomeOne ? .gray : .green)
                 })
                 Section(content: {
                     OffWorkView()
                 }, header: {
-                    Text("-- Off --")
-                        .font(.title3)
+                    Text(isOff ? "" : "-- 😴 --")
+                        .font(.title)
                 })
                 
             }

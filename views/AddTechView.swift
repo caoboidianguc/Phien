@@ -13,11 +13,13 @@ struct AddTechView: View {
     @State private var email = ""
     @EnvironmentObject var shop: ShopStore
     @Binding var isPresenting: Bool
+    @FocusState private var focusName: Bool
     
     var body: some View {
         NavigationStack {
             TextField("Name:", text: $name)
                 .textInputAutocapitalization(.words)
+                .focused($focusName)
             TextField("Phone Optional:", text: $sdt)
                 .keyboardType(.numberPad)
             TextField("Email Optional:", text: $email)
@@ -36,6 +38,7 @@ struct AddTechView: View {
                     }.disabled(name.isEmpty)
                 }
             }
+            .onAppear{focusName = true}
     }//body
     
     private func addTech(){

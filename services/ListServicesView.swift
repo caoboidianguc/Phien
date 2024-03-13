@@ -39,7 +39,7 @@ struct ListServicesView: View {
             })
         }
         .frame(idealWidth: 500, idealHeight: 700)
-        .navigationTitle("Add Service")
+        .navigationTitle("Add Service for \(tech.name)")
         .toolbar {
             ToolbarItem(placement: .primaryAction){
                 Button("Done"){

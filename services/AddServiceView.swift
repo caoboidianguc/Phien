@@ -13,12 +13,14 @@ struct AddServiceView: View {
     @State private var name: String = ""
     @State private var price: Int = 0
 //    @Binding var isPresenting: Bool
+    @FocusState private var focusName: Bool
     
     var body: some View {
         HStack {
             VStack {
                 TextField("SerVice" , text: $name)
                     .textInputAutocapitalization(.words)
+                    .focused($focusName)
                 TextField("Price" , value: $price, formatter: NumberFormatter())
                     .keyboardType(.numberPad)
             }
@@ -28,6 +30,7 @@ struct AddServiceView: View {
                 Label("", systemImage: "plus.circle")
             }).disabled(name.isEmpty)
         }
+        .onAppear{focusName = true}
         
 //        .toolbar {
 //            ToolbarItem(placement: .topBarLeading){

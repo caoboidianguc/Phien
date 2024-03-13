@@ -11,13 +11,14 @@ struct WorkingView: View {
     @EnvironmentObject var shop: ShopStore
     
     var body: some View {
-        ForEach(shop.phien()){ tech in
-            if tech.today && tech.isWork {
+        ScrollView {
+            ForEach(shop.phien()){ tech in
                 TechButtonTurnView(tech: binding(for: tech))
             }
+           
         }
-        .onMove(perform: move)
-    }
+        
+    }//body
     
     private func binding(for tech: Tech) -> Binding<Tech>{
         guard let techIndex = shop.shop.techs.firstIndex(where: {$0.id == tech.id}) else {
@@ -26,14 +27,11 @@ struct WorkingView: View {
         return $shop.shop.techs[techIndex]
     }
     
-    private func move(from: IndexSet, to: Int){
-        withAnimation {
-            shop.shop.techs.move(fromOffsets: from, toOffset: to)
-        }
-    }
+    
 }
 
 #Preview {
     WorkingView()
         .environmentObject(ShopStore())
 }
+

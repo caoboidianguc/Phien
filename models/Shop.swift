@@ -10,6 +10,7 @@ struct Shop: Codable {
     var id: UUID
     let name: String
     var phone: String = ""
+    var email: String = ""
     var services: [Service]
     var techs : [Tech]
     var clients: [Client]
@@ -29,4 +30,6 @@ let dayEarn = Shop(name: "DayEarn")
 
 extension Shop {
     static var dv: [Service] = [Service(name: "Fishing", price: 20), Service(name: "Sing Along", price: 23)]
+    
+    
 }
