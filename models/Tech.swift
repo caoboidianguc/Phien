@@ -53,5 +53,4 @@ extension Tech {
         return Color(red: red, green: xanh, blue: luc)
     }
     
-    
 }

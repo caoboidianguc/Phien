@@ -10,11 +10,20 @@ import SwiftUI
 
 struct OffWorkView: View {
     @EnvironmentObject var shop: ShopStore
-    let cot = [GridItem(spacing: 5, alignment: .center),
-               GridItem(spacing: 5, alignment: .center),
-               GridItem(spacing: 5, alignment: .center),
-              GridItem(spacing: 5, alignment: .center),
-               GridItem(spacing: 5, alignment: .center)]
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    var cot: [GridItem] {
+        if horizontalSizeClass == .compact {
+            return [GridItem(spacing: 5, alignment: .center),
+                       GridItem(spacing: 5, alignment: .center),
+                       GridItem(spacing: 5, alignment: .center),]
+        } else {
+            return [GridItem(spacing: 5, alignment: .center),
+                    GridItem(spacing: 5, alignment: .center),
+                    GridItem(spacing: 5, alignment: .center),
+                   GridItem(spacing: 5, alignment: .center),
+                    GridItem(spacing: 5, alignment: .center)]
+        }
+    }
     @State private var isEditing = false
     
     var body: some View {

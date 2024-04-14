@@ -25,16 +25,7 @@ struct ListServicesView: View {
             Divider().frame(width: 420)
             LazyVGrid(columns: cot, alignment: .center, spacing: 42, content: {
                 ForEach($services){$dv in
-                    Button(action: {
-                        dv.startTime = Date.now
-                        danhMuc.append(dv)
-                        
-                    }, label: {
-                        VStack {
-                            Text(dv.name)
-                            Text("\(dv.price)")
-                        }
-                    })
+                    NutChonDV(dv: $dv, danhMuc: $danhMuc)
                 }
             })
         }
@@ -59,6 +50,7 @@ struct ListServicesView: View {
             }
         })
     }//body
+    
     var chon: LocalizedStringKey {
             danhMuc.isEmpty ? "Please Pick" : "UnPick-> "
         }

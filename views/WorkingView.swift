@@ -12,10 +12,17 @@ struct WorkingView: View {
     
     var body: some View {
         ScrollView {
-            ForEach(shop.phien()){ tech in
+            
+            ForEach(shop.phien(chon: shop.shop.chon)){ tech in
                 TechButtonTurnView(tech: binding(for: tech))
             }
            
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal, content: {
+                Toggle("By Turn", isOn: $shop.shop.chon)
+                    .foregroundStyle(shop.shop.chon ? .green : .blue)
+            })
         }
         
     }//body
@@ -26,12 +33,11 @@ struct WorkingView: View {
         }
         return $shop.shop.techs[techIndex]
     }
-    
-    
 }
 
 #Preview {
     WorkingView()
         .environmentObject(ShopStore())
 }
+
 

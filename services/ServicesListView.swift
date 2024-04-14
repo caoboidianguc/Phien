@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ServicesListView: View {
     @EnvironmentObject var shop: ShopStore
-//    @State private var themDVButton = false
     
     var body: some View {
         NavigationStack {

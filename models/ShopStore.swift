@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import SwiftUI
+//import SwiftUI
 
 @MainActor
 final class ShopStore: ObservableObject {
     
     @Published var shop: Shop = Shop(name: "DayEarn")
-    
+    @Published var chon: Bool = false
     
     private static func fileURL() throws -> URL {
         try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -41,11 +41,16 @@ final class ShopStore: ObservableObject {
         _ = try await task.value
     }
     
-    func phien() -> [Tech]{
-        return self.shop.techs.filter {$0.isWork && $0.today}
-            .sorted(by: {$0.date.formatted(date: .omitted, time: .standard) < $1.date.formatted(date: .omitted, time: .standard)})
-            .sorted(by: { $0.servDone.filter{$0.today}.count < $1.servDone.filter{$0.today}.count})
-                        
+    func phien(chon: Bool) -> [Tech]{
+        if chon == true {
+            return self.shop.techs.filter {$0.isWork && $0.today}
+                .sorted(by: {$0.date.formatted(date: .complete, time: .complete) < $1.date.formatted(date: .complete, time: .complete)})
+                .sorted(by: { $0.servDone.filter{$0.today}.count < $1.servDone.filter{$0.today}.count})
+        }
+        else {
+            return self.shop.techs.filter {$0.isWork && $0.today}
+                .sorted(by: {$0.date.formatted(date: .complete, time: .complete) < $1.date.formatted(date: .complete, time: .complete)})
+        }
     }
     
     func removeTech(tech: Tech){

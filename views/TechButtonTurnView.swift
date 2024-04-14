@@ -56,6 +56,7 @@ struct TechButtonTurnView: View {
             }
         
     }//body
+   
     
     var dichVu: some View {
         ScrollView(.horizontal, showsIndicators: false){
@@ -73,9 +74,14 @@ struct TechButtonTurnView: View {
         Button(action: {
             showListservicesView = true
         }, label: {
-            Text(String(tech.name.first!))
-                .font(.system(size: 42))
-//            Label("", systemImage: "plus").font(.system(size: 30))
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .shadow(color: .black, radius: 10)
+                    .frame(width: 60, height: 50)
+                    .opacity(0.3)
+                Text(String(tech.name.first!))
+                    .font(.system(size: 42))
+            }
             
         })
         .frame(width: 42, height: 42, alignment: .center)

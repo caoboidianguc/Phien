@@ -14,6 +14,7 @@ struct Shop: Codable {
     var services: [Service]
     var techs : [Tech]
     var clients: [Client]
+    var chon: Bool = false
     
     init(id: UUID = UUID(), name: String, services: [Service] = [], techs: [Tech] = [], clients: [Client] = []) {
         self.id = id
