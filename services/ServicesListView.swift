@@ -42,23 +42,8 @@ struct ServicesListView: View {
             .navigationTitle("Services")
             .navigationBarTitleDisplayMode(.automatic)
             .listStyle(.plain)
-//            .toolbar {
-//                ToolbarItem(placement: .topBarTrailing){
-//                    Button(action: {
-//                        themDVButton = true
-//                    }, label: {
-//                        Label("", systemImage: "plus")
-//                    })
-//                }
-//                
-//            }
-//            .sheet(isPresented: $themDVButton){
-//                NavigationStack {
-//                    AddServiceView(shop: $shop, isPresenting: $themDVButton)
-//                }
-//            }
         }
-    }//body
+    }
     
 }
 

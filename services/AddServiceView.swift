@@ -12,7 +12,6 @@ struct AddServiceView: View {
     @EnvironmentObject var shop: ShopStore
     @State private var name: String = ""
     @State private var price: Int = 0
-//    @Binding var isPresenting: Bool
     @FocusState private var focusName: Bool
     
     var body: some View {
@@ -32,19 +31,6 @@ struct AddServiceView: View {
         }
         .onAppear{focusName = true}
         
-//        .toolbar {
-//            ToolbarItem(placement: .topBarLeading){
-//                Button("Dismiss"){
-//                    isPresenting = false
-//                }
-//            }
-//            ToolbarItem(placement: .confirmationAction){
-//                Button("Done"){
-//                    addService()
-//                    isPresenting = false
-//                }.disabled(name.isEmpty)
-//            }
-//        }
     }//body
     
     private func addService(){

@@ -16,8 +16,9 @@ struct ListServicesView: View {
                GridItem(spacing: 5, alignment: .center),
                GridItem(spacing: 5, alignment: .center),
                GridItem(spacing: 5, alignment: .center)]
-    @State private var danhMuc: [Service] = []
+    @State var danhMuc: [Service] = []
     @State private var removeLastItem = false
+    @State private var chonnut = ""
     
     var body: some View {
         ScrollView {
@@ -25,7 +26,21 @@ struct ListServicesView: View {
             Divider().frame(width: 420)
             LazyVGrid(columns: cot, alignment: .center, spacing: 42, content: {
                 ForEach($services){$dv in
-                    NutChonDV(dv: $dv, danhMuc: $danhMuc)
+                    Button(action: {
+                        withAnimation(.easeInOut(duration: 0.4)){
+                            dv.startTime = Date.now
+                            chonnut = dv.name
+                            danhMuc.append(dv)
+                        }
+                    }, label: {
+                        VStack {
+                            Text(dv.name)
+                            Text("\(dv.price)")
+                        }
+                        .opacity(chonnut == dv.name ? 0.1 : 1)
+                        .scaleEffect(chonnut == dv.name ? 0.1 : 1.1)
+                        .rotationEffect(.degrees(chonnut == dv.name ? 180 : 0))
+                    })
                 }
             })
         }
@@ -33,10 +48,10 @@ struct ListServicesView: View {
         .navigationTitle("Add Service for \(tech.name)")
         .toolbar {
             ToolbarItem(placement: .primaryAction){
-                Button("Done"){
+                AddServicesButton(){
                     tech.servDone += danhMuc
                     dismiss()
-                }
+                }.disabled(danhMuc.isEmpty)
             }
             ToolbarItem(placement: .topBarLeading){
                 Button("Remove Last Turn", action: {
@@ -49,8 +64,7 @@ struct ListServicesView: View {
                 tech.servDone.removeLast()
             }
         })
-    }//body
-    
+    }
     var chon: LocalizedStringKey {
             danhMuc.isEmpty ? "Please Pick" : "UnPick-> "
         }
@@ -76,4 +90,21 @@ struct ListServicesView: View {
 
 #Preview {
     ListServicesView(tech: .constant(Tech.techMau[0]), services: .constant(allServices))
+        .environmentObject(ShopStore())
+}
+
+
+struct AddServicesButton: View {
+    var action: () -> Void = {}
+    var body: some View {
+        Button(action: action, label: {
+            RoundedRectangle(cornerRadius: 15)
+                .frame(width:75, height: 35)
+                .overlay{
+                    Text("Done")
+                        .font(.system(size: 25))
+                        .foregroundStyle(.background)
+                }
+        })
+    }
 }

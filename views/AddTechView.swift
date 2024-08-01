@@ -39,7 +39,7 @@ struct AddTechView: View {
                 }
             }
             .onAppear{focusName = true}
-    }//body
+    }
     
     private func addTech(){
         let newTech = Tech(name: name, phone: sdt, email: email)

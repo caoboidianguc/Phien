@@ -14,7 +14,7 @@ struct NutChonDV: View {
     
     var body: some View {
         Button(action: {
-            withAnimation(.bouncy(duration: 1.4)){
+            withAnimation(.bouncy(duration: 1.0)){
                 danhMuc.append(dv)
                 dv.startTime = Date.now
                 chon.toggle()

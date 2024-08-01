@@ -20,13 +20,15 @@ struct WorkingView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal, content: {
-                Toggle("By Turn", isOn: $shop.shop.chon)
+                Toggle(modeNut, isOn: $shop.shop.chon)
                     .foregroundStyle(shop.shop.chon ? .green : .blue)
             })
         }
         
-    }//body
-    
+    }
+    var modeNut: String {
+        shop.shop.chon ? "By Time" : "By Turn"
+    }
     private func binding(for tech: Tech) -> Binding<Tech>{
         guard let techIndex = shop.shop.techs.firstIndex(where: {$0.id == tech.id}) else {
             fatalError("Can't get technician!")

@@ -18,15 +18,12 @@ struct DayWorkView: View {
     var isOff: Bool {
         self.shop.shop.techs.filter({!$0.isWork || !$0.today}).isEmpty
     }
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 Section(content: {
                     WorkingView()
-                }, header: {
-                    Text(isSomeOne ? "👀" : "Working right now..")
-                        .font(.title)
-                        .foregroundStyle(isSomeOne ? .gray : .green)
                 })
                 Section(content: {
                     OffWorkView()
@@ -47,7 +44,7 @@ struct DayWorkView: View {
                     }
             })
             .listStyle(.plain)
-            .navigationTitle("Good day \(ngay.formatted(.dateTime.day().weekday()))")
+            .navigationTitle("Welcome \(ngay.formatted(.dateTime.day().weekday()))")
             
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing){
@@ -62,12 +59,11 @@ struct DayWorkView: View {
             .sheet(isPresented: $themTechButton){
                 NavigationStack {
                     AddTechView(isPresenting: $themTechButton)
-                        
                 }
             }
             
         }
-    }//body
+    }
     var ngay: Date {
         get {
             return Date.now

@@ -36,9 +36,9 @@ struct Tech: Identifiable, Codable, Equatable {
     var today: Bool {
         date.formatted(date: .numeric, time: .omitted) == Date().formatted(date: .numeric, time: .omitted)
     }
-//    var serDoneToday: [Service] {
-//        self.servDone.filter {$0.today}
-//    }
+    var serDoneToday: [Service] {
+        self.servDone.filter {$0.today}
+    }
 }
 
 
@@ -52,5 +52,11 @@ extension Tech {
         let luc = CGFloat.random(in: 0...1)
         return Color(red: red, green: xanh, blue: luc)
     }
-    
+    func aWorkDay() -> Int {
+        var tong = 0
+        for ser in serDoneToday {
+            tong += ser.price
+        }
+        return tong
+    }
 }

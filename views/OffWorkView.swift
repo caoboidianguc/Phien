@@ -57,7 +57,7 @@ struct OffWorkView: View {
                 }
             }
         }
-    }//body
+    }
     
 }
 
