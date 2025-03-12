@@ -43,13 +43,16 @@ final class ShopStore: ObservableObject {
     
     func phien(chon: Bool) -> [Tech]{
         if chon == true {
-            return self.shop.techs.filter {$0.isWork && $0.today}
-                .sorted(by: {$0.date.formatted(date: .numeric, time: .standard) < $1.date.formatted(date: .numeric, time: .standard)})
+            let techUuTien = self.shop.techs.filter {$0.isWork && $0.today}
+                .sorted(by: { $0.date < $1.date})
                 .sorted(by: { $0.servDone.filter{$0.today}.count < $1.servDone.filter{$0.today}.count})
+            
+            return techUuTien
         }
         else {
-            return self.shop.techs.filter {$0.isWork && $0.today}
-                .sorted(by: {$0.date.formatted(date: .complete, time: .standard) < $1.date.formatted(date: .complete, time: .standard)})
+            let tech = self.shop.techs.filter {$0.isWork && $0.today}
+                .sorted(by: { $0.date < $1.date})
+            return tech
         }
     }
     

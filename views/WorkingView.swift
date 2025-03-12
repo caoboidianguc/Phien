@@ -27,7 +27,7 @@ struct WorkingView: View {
         
     }
     var modeNut: String {
-        shop.shop.chon ? "By Time" : "By Turn"
+        shop.shop.chon ? "Turn" : "Time"
     }
     private func binding(for tech: Tech) -> Binding<Tech>{
         guard let techIndex = shop.shop.techs.firstIndex(where: {$0.id == tech.id}) else {
@@ -41,5 +41,4 @@ struct WorkingView: View {
     WorkingView()
         .environmentObject(ShopStore())
 }
-
 
