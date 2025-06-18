@@ -31,6 +31,5 @@ let dayEarn = Shop(name: "DayEarn")
 
 extension Shop {
     static var dv: [Service] = [Service(name: "Fishing", price: 20), Service(name: "Sing Along", price: 23)]
-    
-    
 }
+
