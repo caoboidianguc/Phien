@@ -79,7 +79,7 @@ struct TechButtonTurnView: View {
                     .shadow(color: .black, radius: 10)
                     .frame(width: 60, height: 50)
                     .opacity(0.3)
-                Text(String(tech.name.first!))
+                Text(tech.initial)
                     .font(.system(size: 42))
             }
             

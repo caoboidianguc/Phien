@@ -47,10 +47,19 @@ extension Tech {
                           Tech(name: "Linh", isWork: false),
                           Tech(name: "Jubi")]
     var maungauNhien: Color {
-        let red = CGFloat.random(in: 0...1)
-        let xanh = CGFloat.random(in: 0...1)
-        let luc = CGFloat.random(in: 0...1)
-        return Color(red: red, green: xanh, blue: luc)
+        var hash = 0
+        for scalar in name.unicodeScalars {
+            hash = Int(scalar.value) &+ (hash << 5) &- hash
+        }
+        let red = max(Double((hash >> 16) & 0xFF) / 255.0, 0.35)
+        let green = max(Double((hash >> 8) & 0xFF) / 255.0, 0.35)
+        let blue = max(Double(hash & 0xFF) / 255.0, 0.35)
+        return Color(red: red, green: green, blue: blue)
+    }
+
+    var initial: String {
+        guard let first = name.first else { return "?" }
+        return String(first).uppercased()
     }
     func aWorkDay() -> Int {
         var tong = 0

@@ -41,6 +41,9 @@ struct ServicesListView: View {
             })
             .navigationTitle("Services")
             .navigationBarTitleDisplayMode(.automatic)
+            .toolbar {
+                EditButton()
+            }
             .listStyle(.plain)
         }
     }

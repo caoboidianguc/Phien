@@ -41,23 +41,37 @@ final class ShopStore: ObservableObject {
         _ = try await task.value
     }
     
-    func phien(chon: Bool) -> [Tech]{
-        if chon == true {
-            let techUuTien = self.shop.techs.filter {$0.isWork && $0.today}
-                .sorted(by: { $0.date < $1.date})
-                .sorted(by: { $0.servDone.filter{$0.today}.count < $1.servDone.filter{$0.today}.count})
-            
-            return techUuTien
+    func phien(chon: Bool) -> [Tech] {
+        let workingToday = shop.techs.filter { $0.isWork && $0.today }
+        if chon {
+            return workingToday.sorted {
+                let leftCount = $0.servDone.filter(\.today).count
+                let rightCount = $1.servDone.filter(\.today).count
+                if leftCount != rightCount { return leftCount < rightCount }
+                return $0.date < $1.date
+            }
         }
-        else {
-            let tech = self.shop.techs.filter {$0.isWork && $0.today}
-                .sorted(by: { $0.date < $1.date})
-            return tech
-        }
+        return workingToday.sorted { $0.date < $1.date }
     }
     
-    func removeTech(tech: Tech){
-        shop.techs.removeAll(where: {$0.id == tech.id})
+    func removeTech(tech: Tech) {
+        shop.techs.removeAll(where: { $0.id == tech.id })
     }
-    
+
+    func persist() async {
+        do {
+            try await save(shop: shop)
+        } catch {
+            print("Failed to save shop data: \(error.localizedDescription)")
+        }
+    }
+
+    func restore() async {
+        do {
+            try await load()
+        } catch {
+            print("Failed to load shop data: \(error.localizedDescription)")
+        }
+    }
+
 }

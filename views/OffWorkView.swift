@@ -88,11 +88,11 @@ struct OffTech: View {
     var body: some View {
         HStack {
             RoundedRectangle(cornerRadius: 10)
-                .fill()//randomColor here
+                .fill(.gray.opacity(0.35))
                 .frame(width: 130, height: 100)
                 .overlay{
                     VStack {
-                        Text(String(tech.name.first!))
+                        Text(tech.initial)
                             .font(.system(size: 45))
                             
                         Text(tech.name).font(.system(size: 30))

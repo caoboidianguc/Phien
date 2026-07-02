@@ -10,35 +10,22 @@ import SwiftUI
 @main
 struct PhienApp: App {
     @StateObject var shop = ShopStore()
+
     var body: some Scene {
         WindowGroup {
-            ContentView(){
-                Task{
-                    do {
-                        try await shop.save(shop: shop.shop)
-                    } catch {
-                        fatalError(error.localizedDescription)
-                    }
+            ContentView {
+                Task {
+                    await shop.persist()
                 }
             }
             .environmentObject(shop)
-           .onAppear {
-                    Task {
-                        do {
-                            try await shop.load()
-                        } catch {
-                            fatalError(error.localizedDescription)
-                        }
-                    }
-                }
-                .refreshable {
-                    do {
-                        try await shop.save(shop: shop.shop)
-                        try await shop.load()
-                    } catch {
-                        fatalError(error.localizedDescription)
-                    }
-                }
+            .task {
+                await shop.restore()
+            }
+            .refreshable {
+                await shop.persist()
+                await shop.restore()
+            }
         }
     }
 }
