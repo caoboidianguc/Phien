@@ -13,32 +13,31 @@ final class ShopStore: ObservableObject {
     
     @Published var shop: Shop = Shop(name: "DayEarn")
     @Published var chon: Bool = false
+    /// True after the first restore attempt finishes (success or failure).
+    @Published private(set) var didFinishRestore = false
     
     private static func fileURL() throws -> URL {
-        try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent("tech.data")
     }
     
-    func load() async throws{
-        let task = Task<Shop, Error> {
-            let fileURL = try Self.fileURL()
-            guard let data = try? Data(contentsOf: fileURL) else {
-                return shop
-            }
-            let newShop = try JSONDecoder().decode(Shop.self, from: data)
-            return newShop
+    func load() async throws {
+        let fileURL = try Self.fileURL()
+        guard let data = try? Data(contentsOf: fileURL), !data.isEmpty else {
+            return
         }
-        let techs = try await task.value
-        self.shop = techs
+        do {
+            shop = try JSONDecoder().decode(Shop.self, from: data)
+        } catch {
+            // Keep empty shop rather than crashing or leaving UI stuck.
+            print("Shop decode failed, starting fresh: \(error.localizedDescription)")
+        }
     }
     
     func save(shop: Shop) async throws {
-        let task = Task {
-            let data = try JSONEncoder().encode(shop)
-            let outfile = try Self.fileURL()
-            try data.write(to: outfile)
-        }
-        _ = try await task.value
+        let data = try JSONEncoder().encode(shop)
+        let outfile = try Self.fileURL()
+        try data.write(to: outfile, options: [.atomic])
     }
     
     func phien(chon: Bool) -> [Tech] {
@@ -67,11 +66,25 @@ final class ShopStore: ObservableObject {
     }
 
     func restore() async {
+        defer { didFinishRestore = true }
         do {
             try await load()
         } catch {
+            // Corrupt or incompatible save must not freeze/crash the app.
             print("Failed to load shop data: \(error.localizedDescription)")
         }
+    }
+
+    /// Saves current state, then reloads so the list re-sorts and "today" flags refresh.
+    func refresh() async {
+        await persist()
+        do {
+            try await load()
+        } catch {
+            print("Failed to refresh shop data: \(error.localizedDescription)")
+        }
+        // Ensure observers re-render even if disk data is identical (e.g. day rollover).
+        objectWillChange.send()
     }
 
 }

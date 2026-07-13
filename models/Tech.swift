@@ -10,10 +10,7 @@ import Foundation
 
 struct Tech: Identifiable, Codable, Equatable {
     static func == (lhs: Tech, rhs: Tech) -> Bool {
-        if lhs.name == rhs.name && lhs.phone == rhs.phone {
-            return true
-        }
-        return false
+        lhs.id == rhs.id
     }
     var id: UUID = UUID()
     var name: String
@@ -24,13 +21,27 @@ struct Tech: Identifiable, Codable, Equatable {
     var isWork: Bool
     var clients: [Client] = []
     
-    init(name: String, phone: String = "", email: String = "", servDone: [Service] = [], date: Date = Date(), isWork: Bool = false) {
+    init(id: UUID = UUID(), name: String, phone: String = "", email: String = "", servDone: [Service] = [], date: Date = Date(), isWork: Bool = false, clients: [Client] = []) {
+        self.id = id
         self.name = name
         self.phone = phone
         self.email = email
         self.servDone = servDone
         self.date = date
         self.isWork = isWork
+        self.clients = clients
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        name = try container.decode(String.self, forKey: .name)
+        phone = try container.decodeIfPresent(String.self, forKey: .phone) ?? ""
+        email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
+        servDone = try container.decodeIfPresent([Service].self, forKey: .servDone) ?? []
+        date = try container.decodeIfPresent(Date.self, forKey: .date) ?? Date()
+        isWork = try container.decodeIfPresent(Bool.self, forKey: .isWork) ?? false
+        clients = try container.decodeIfPresent([Client].self, forKey: .clients) ?? []
     }
     
     var today: Bool {

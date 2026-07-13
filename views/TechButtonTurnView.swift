@@ -59,14 +59,14 @@ struct TechButtonTurnView: View {
    
     
     var dichVu: some View {
-        ScrollView(.horizontal, showsIndicators: false){
-            HStack {
-                ForEach(dvHnay){ser in
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(dvHnay) { ser in
                     ServiceBlockView(serv: ser)
                 }
-            }.frame(minHeight: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, maxHeight: .greatestFiniteMagnitude)
+            }
         }
-//        .frame(height: 100)
+        .frame(height: 100)
         .transition(.move(edge: .bottom))
     }
     

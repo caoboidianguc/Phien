@@ -27,28 +27,26 @@ struct OffWorkView: View {
     @State private var isEditing = false
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: cot, alignment: .center, spacing: 10, content: {
-                ForEach($shop.shop.techs) {$tech in
-                    if !tech.isWork || !tech.today {
-                        BackWorkButtonTurn(tech: $tech)
-                            .overlay(alignment: .topTrailing){
-                                if isEditing {
-                                    Button {
-                                        shop.removeTech(tech: tech)
-                                    } label: {
-                                        Image(systemName: "xmark.square.fill")
-                                            .font(Font.title)
-                                            .symbolRenderingMode(.palette)
-                                            .foregroundStyle(.white, .red)
-                                    }.offset(x:-15,y:15)
+        // LazyVGrid only — parent DayWorkView owns the ScrollView.
+        LazyVGrid(columns: cot, alignment: .center, spacing: 10) {
+            ForEach($shop.shop.techs) { $tech in
+                if !tech.isWork || !tech.today {
+                    BackWorkButtonTurn(tech: $tech)
+                        .overlay(alignment: .topTrailing) {
+                            if isEditing {
+                                Button {
+                                    shop.removeTech(tech: tech)
+                                } label: {
+                                    Image(systemName: "xmark.square.fill")
+                                        .font(Font.title)
+                                        .symbolRenderingMode(.palette)
+                                        .foregroundStyle(.white, .red)
                                 }
+                                .offset(x: -15, y: 15)
                             }
-                    }
+                        }
                 }
-                
-                
-            })
+            }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {

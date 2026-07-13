@@ -31,10 +31,11 @@ struct Service: Identifiable, Codable, Equatable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        // Old saves had no stored `id` (id was computed from startTime).
         id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
         name = try container.decode(String.self, forKey: .name)
         price = try container.decode(Int.self, forKey: .price)
-        startTime = try container.decode(Date.self, forKey: .startTime)
+        startTime = try container.decodeIfPresent(Date.self, forKey: .startTime) ?? Date()
     }
 }
 

@@ -20,22 +20,27 @@ struct DayWorkView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                Section(content: {
+                VStack(spacing: 12) {
                     WorkingView()
                         .padding(.horizontal, 5)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                })
-                Section(content: {
+
+                    if !isOff {
+                        Text("-- 😴 --")
+                            .font(.title)
+                            .padding(.top, 15)
+                            .foregroundStyle(.secondary)
+                    }
+
                     OffWorkView()
                         .padding(.horizontal, 5)
-                }, header: {
-                    Text(isOff ? "" : "-- 😴 --")
-                        .font(.title)
-                        .padding(.top, 15)
-                        .foregroundStyle(.secondary)
-                })
-                
-            }.background(
+                }
+            }
+            .refreshable {
+                await shop.refresh()
+                ngay = Date.now
+            }
+            .background(
                 LinearGradient(
                     colors: [.cyan.opacity(0.05), .white],
                     startPoint: .top,
@@ -73,18 +78,16 @@ struct DayWorkView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: shop.shop.techs.isEmpty)
-            .listStyle(.plain)
             .navigationTitle("Welcome \(ngay.formatted(.dateTime.day().weekday()))")
             
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing){
-                    Button(action: {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
                         themTechButton = true
-                    }, label: {
-                        Label("", systemImage: "person.badge.plus")
-                    })
+                    } label: {
+                        Label("Add technician", systemImage: "person.badge.plus")
+                    }
                 }
-                
             }
             .sheet(isPresented: $themTechButton){
                 NavigationStack {

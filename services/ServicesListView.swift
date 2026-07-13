@@ -29,6 +29,9 @@ struct ServicesListView: View {
                 })
                 AddServiceView()
             }
+            .refreshable {
+                await shop.refresh()
+            }
             .overlay(alignment: .center, content: {
                 if shop.shop.services.isEmpty {
                         VStack(alignment: .center){

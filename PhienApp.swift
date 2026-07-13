@@ -14,16 +14,10 @@ struct PhienApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView {
-                Task {
-                    await shop.persist()
-                }
+                Task { await shop.persist() }
             }
             .environmentObject(shop)
             .task {
-                await shop.restore()
-            }
-            .refreshable {
-                await shop.persist()
                 await shop.restore()
             }
         }

@@ -16,7 +16,7 @@ struct AddTechView: View {
     @FocusState private var focusName: Bool
     
     var body: some View {
-        NavigationStack {
+        VStack(alignment: .leading, spacing: 12) {
             TextField("Name:", text: $name)
                 .textInputAutocapitalization(.words)
                 .focused($focusName)
@@ -24,21 +24,24 @@ struct AddTechView: View {
                 .keyboardType(.numberPad)
             TextField("Email Optional:", text: $email)
                 .keyboardType(.emailAddress)
-        }.padding()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading){
-                    Button("Dismiss"){
-                        isPresenting = false
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction){
-                    Button("Done"){
-                        addTech()
-                        isPresenting = false
-                    }.disabled(name.isEmpty)
+            Spacer()
+        }
+        .padding()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Dismiss") {
+                    isPresenting = false
                 }
             }
-            .onAppear{focusName = true}
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    addTech()
+                    isPresenting = false
+                }
+                .disabled(name.isEmpty)
+            }
+        }
+        .onAppear { focusName = true }
     }
     
     private func addTech(){

@@ -25,7 +25,7 @@ struct ContentView: View {
                 }
         }
         .onChange(of: scene) { phase in
-            if phase == .inactive || phase == .background {
+            if phase == .background {
                 saveAction()
             }
         }
